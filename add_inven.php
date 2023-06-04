@@ -1,23 +1,32 @@
 <?php
-include 'connection.php';
+include('connection.php');
+session_start();
 
 if (isset($_POST['submit'])) {
   $id = $_POST['id'];
-  $FirstName = $_POST['FirstName'];
-  $LastName = $_POST['LastName'];
-  $Email = $_POST['Email'];
-  $Number = $_POST['Number'];
+  $product = $_POST['product'];
+  $quantity = $_POST['quantity'];
 
-  $sql = "INSERT INTO `user` (`id`, `FirstName`, `LastName`, `Email`, `Number`)
-          VALUES ('$id','$FirstName', '$LastName', '$Email', '$Number')";
+  // Check the connection
+  if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
+  }
 
-  $result = mysqli_query($con, $sql);
-  if ($result) {
-    header('Location: add.php');
+  // Prepare and bind the statement
+  $stmt = $con->prepare("INSERT INTO `inven` (`id`, `product`, `quantity`) VALUES (?, ?, ?)");
+  $stmt->bind_param("sss", $id, $product, $quantity);
+
+  // Execute the statement
+  if ($stmt->execute()) {
+    header('Location: inventory.php');
     exit();
   } else {
     die(mysqli_error($con));
   }
+
+  // Close the statement and connection
+  $stmt->close();
+  mysqli_close($con);
 }
 ?>
 
@@ -86,27 +95,19 @@ if (isset($_POST['submit'])) {
       <div class="col-lg-4 m-auto">
         <form method="post">
           <div class="form-group">
-          <label>Id</label>
+            <label>Id</label>
             <input type="text" class="form-control" placeholder="Enter your id" name="id" autocomplete="off" readonly>
           </div>
           <div class="form-group">
-            <label>FirstName</label>
-            <input type="text" class="form-control" placeholder="Enter your FirstName" name="FirstName" autocomplete="off" readonly>
+            <label>Product</label>
+            <input type="text" class="form-control" placeholder="Enter your product" name="product" autocomplete="off" readonly>
           </div>
           <div class="form-group">
-            <label>LastName</label>
-            <input type="text" class="form-control" placeholder="Enter your LastName" name="LastName" autocomplete="off" readonly>
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" placeholder="Enter your Email" name="Email" autocomplete="off" readonly>
-          </div>
-          <div class="form-group">
-            <label>Number</label>
-            <input type="text" class="form-control" placeholder="Enter your Number" name="Number" autocomplete="off" readonly>
+            <label>Quantity</label>
+            <input type="text" class="form-control" placeholder="Enter your quantity" name="quantity" autocomplete="off" readonly>
           </div>
           <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-        </form>
+          </form>
         <br>
     <?php include('inc/footer.php'); ?>
       </div>

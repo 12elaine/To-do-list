@@ -1,24 +1,30 @@
 <?php
-include 'connection.php';
+include('connection.php');
+$id = $_GET['updateid'];
+$sql = "SELECT * FROM `employee` where id=$id";
+$result = mysqli_query($con, $sql);
+$row = mysqli_fetch_assoc($result);
+$id = $row['id'];
+$Name = $row['Name'];
+$Salary = $row['Salary'];
+$Possition_Job = $row['Possition_Job'];
 
-if (isset($_POST['submit'])) {
-  $id = $_POST['id'];
-  $FirstName = $_POST['FirstName'];
-  $LastName = $_POST['LastName'];
-  $Email = $_POST['Email'];
-  $Number = $_POST['Number'];
+// Check if the submit button is clicked
+if (isset($_POST['update'])) {
+  $Name = $_POST['Name'];
+  $Salary = $_POST['Salary'];
+  $Possition_Job = $_POST['Possition_Job'];
 
-  $sql = "INSERT INTO `user` (`id`, `FirstName`, `LastName`, `Email`, `Number`)
-          VALUES ('$id','$FirstName', '$LastName', '$Email', '$Number')";
-
+  $sql = "UPDATE `employee` SET Name='$Name', Salary='$Salary', Possition_Job='$Possition_Job' WHERE id=$id";
   $result = mysqli_query($con, $sql);
   if ($result) {
-    header('Location: add.php');
-    exit();
+    header('Location: employee.php');
+    exit;
   } else {
     die(mysqli_error($con));
   }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -64,6 +70,7 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
+<body>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand black-bold" href="index.php">
@@ -76,7 +83,7 @@ if (isset($_POST['submit'])) {
     <div class="container my-5">
       <div class="row">
         <div class="col-lg-4 m-auto">
-          <h3 style="color:black;">Please fill out this form</h3>
+          <h3 style="color:black;">Update the provided info. if needed</h3>
         </div>
       </div>
       </body> 
@@ -86,27 +93,23 @@ if (isset($_POST['submit'])) {
       <div class="col-lg-4 m-auto">
         <form method="post">
           <div class="form-group">
-          <label>Id</label>
-            <input type="text" class="form-control" placeholder="Enter your id" name="id" autocomplete="off" readonly>
+            <label>Id</label>
+            <input type="text" class="form-control" placeholder="Enter your id" name="id" value="<?php echo $id; ?>" autocomplete="off" readonly>
           </div>
           <div class="form-group">
-            <label>FirstName</label>
-            <input type="text" class="form-control" placeholder="Enter your FirstName" name="FirstName" autocomplete="off" readonly>
+            <label>Name</label>
+            <input type="text" class="form-control" placeholder="Enter your Name" name="Name" value="<?php echo $Name; ?>" autocomplete="off" readonly>
           </div>
           <div class="form-group">
-            <label>LastName</label>
-            <input type="text" class="form-control" placeholder="Enter your LastName" name="LastName" autocomplete="off" readonly>
+            <label>Salary</label>
+            <input type="text" class="form-control" placeholder="Enter your Salary" name="Salary" value="<?php echo $Salary; ?>" autocomplete="off" readonly>
           </div>
           <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" placeholder="Enter your Email" name="Email" autocomplete="off" readonly>
+            <label>Possition Job</label>
+            <input type="text" class="form-control" placeholder="Enter your Possition_Job" name="Possition_Job" value="<?php echo $Possition_Job; ?>" autocomplete="off" readonly>
           </div>
-          <div class="form-group">
-            <label>Number</label>
-            <input type="text" class="form-control" placeholder="Enter your Number" name="Number" autocomplete="off" readonly>
-          </div>
-          <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-        </form>
+          <button type="submit" class="btn btn-primary" name="update">Update</button>
+          </form>
         <br>
     <?php include('inc/footer.php'); ?>
       </div>

@@ -1,20 +1,20 @@
 <?php
 include 'connection.php';
 
-if (isset($_POST['submit'])) {
+// Check if the form is submitted
+if(isset($_POST['submit'])) {
   $id = $_POST['id'];
-  $FirstName = $_POST['FirstName'];
-  $LastName = $_POST['LastName'];
-  $Email = $_POST['Email'];
-  $Number = $_POST['Number'];
+  $Name = $_POST['Name'];
+  $Salary = $_POST['Salary'];
+  $Possition_Job = $_POST['Possition_Job'];
 
-  $sql = "INSERT INTO `user` (`id`, `FirstName`, `LastName`, `Email`, `Number`)
-          VALUES ('$id','$FirstName', '$LastName', '$Email', '$Number')";
+  $sql = "INSERT INTO `employee` (`id`, `Name`, `Salary`, `Possition_Job`)
+          VALUES ('$id', '$Name', '$Salary', '$Possition_Job')";
 
   $result = mysqli_query($con, $sql);
   if ($result) {
-    header('Location: add.php');
-    exit();
+    header('Location: employee.php');
+    exit(); // Terminate the script after redirection
   } else {
     die(mysqli_error($con));
   }
@@ -71,7 +71,7 @@ if (isset($_POST['submit'])) {
                 COLOURS PRINT AND TRADING WEB DESIGN
             </a>
         </div>
-        </nav>
+    </nav>
     <div class="center">
     <div class="container my-5">
       <div class="row">
@@ -81,31 +81,27 @@ if (isset($_POST['submit'])) {
       </div>
       </body> 
 <body>
-  <div class="container my-5">
-    <div class="row">
-      <div class="col-lg-4 m-auto">
-        <form method="post">
-          <div class="form-group">
+<div class="container my-5">
+  <div class="row">
+    <div class="col-lg-4 m-auto">
+      <form method="post">
+        <div class="form-group">
           <label>Id</label>
-            <input type="text" class="form-control" placeholder="Enter your id" name="id" autocomplete="off" readonly>
-          </div>
-          <div class="form-group">
-            <label>FirstName</label>
-            <input type="text" class="form-control" placeholder="Enter your FirstName" name="FirstName" autocomplete="off" readonly>
-          </div>
-          <div class="form-group">
-            <label>LastName</label>
-            <input type="text" class="form-control" placeholder="Enter your LastName" name="LastName" autocomplete="off" readonly>
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" placeholder="Enter your Email" name="Email" autocomplete="off" readonly>
-          </div>
-          <div class="form-group">
-            <label>Number</label>
-            <input type="text" class="form-control" placeholder="Enter your Number" name="Number" autocomplete="off" readonly>
-          </div>
-          <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+          <input type="text" class="form-control" placeholder="Enter your id" name="id" autocomplete="off" readonly>
+        </div>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" placeholder="Enter your Name" name="Name" autocomplete="off" readonly>
+        </div>
+        <div class="form-group">
+          <label>Salary</label>
+          <input type="text" class="form-control" placeholder="Enter your Salary" name="Salary" autocomplete="off" readonly>
+        </div>
+        <div class="form-group">
+          <label>Possition Job</label>
+          <input type="text" class="form-control" placeholder="Enter your Possition_Job" name="Possition_Job" autocomplete="off" readonly>
+        </div>
+        <button type="submit" class="btn btn-primary" name="submit">Submit</button>
         </form>
         <br>
     <?php include('inc/footer.php'); ?>
